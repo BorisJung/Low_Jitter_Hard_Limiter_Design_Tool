@@ -1,0 +1,87 @@
+%% Jitterberechnung
+% 
+% J: RMS Jitter
+% J2: squared jitter [s^2]
+% M: normalized squared jitter [ ]
+% N0: Rauschleistungsdichte [W/Hz]
+% n0: Rauschspannungsdichte [V/sqrt(Hz)]
+% roh_in: Slew Rate des Eingangssignals [V/s]
+% th: output half-level crossing time [s]
+% k: normalized half-level crossing time [ ]
+% tau: Zeitkonstanste [s]
+% G: Voltage gain [ ]
+% g: slope gain [ ]
+% Tr: Rise Time Eingangssignal [s]
+% V: Peak-Peak Eingangssignal [V]
+% A: total slope gain
+%
+%
+%
+%% Minimum Squared Jitter
+%
+%
+% J2min = N0 * Q * g / (4 * roh_in^2 * T)
+%
+% Jmin = sqrt(J2min)
+%
+%
+%% Programmstart
+%
+%% Workspace leeren
+%
+clc;
+clear;
+close all;
+%
+%
+%% Parameterabfrage und -aufbereitung
+[N0, V, roh_in, g, Q, k]=user_para;
+%
+%% Berechnung der Slope Verstärkung der einzelnen Stufen
+%
+%
+[g2_1, g2_2, g3_1, g3_2, g3_3, g4_1, g4_2, g4_3, g4_4]...
+    = gain_distr(g);
+%
+%% Berechnung des normalisierten Jitters M  %%
+%=============================================%
+%
+%
+A = g;
+M(1) = A;
+%
+%
+%% zweistufiger Limiter
+%
+M(2) = g2_1 + g2_2/g2_1;
+%
+%
+%% dreistufiger Limiter
+%
+M(3) = g3_1 + g3_2/g3_1 + g3_3/(g3_1*g3_2);
+%
+%
+%% vierstufiger Limiter
+%
+M(4) = g4_1 + g4_2/g4_1 + g4_3/(g4_1*g4_2) + g4_4/(g4_1*g4_2*g4_3);
+%
+%
+%% Plot
+figure('Name', 'Normalisierter Jitter M','NumberTitle','off','Position',[380,200,1000,500]);
+subplot(1,1,1); stem (M);
+uV=[1e0 ; 1e1 ; 1e2 ; 1e3 ; 1e4 ; 1e5 ; 1e6 ; 1e7];
+set(gca,'yscale','log','YTick',uV,'YTickLabel',num2str(uV));
+grid on;
+%%
+%
+%% Jitterberechnung
+%
+
+
+
+
+
+
+
+
+

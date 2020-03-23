@@ -1,0 +1,35 @@
+%% Optimum Gain Distribution of a cascaded stages hard limiter
+%
+%
+%
+
+function [g2_1, g2_2, g3_1, g3_2, g3_3, g4_1, g4_2, g4_3, g4_4]...
+    = gain_distr(g);
+
+A=g;   %total slope Gain
+%
+%
+%% 2 Stages
+disp('2 Stages:');
+% g1=sqrt(2*g2) , g1*g2 = A
+g2_1 = 1.26 * (A^(1/3))
+g2_2 = 0.79 * (A^(2/3))
+%
+%
+%% 3 Stages
+disp('3 Stages:');
+% g2=sqrt(2*g3) , g1=sqrt(2*sqrt(2*g3)) , g1*g2*g3=A
+g3_1 = 1.49 * A^(1/7)
+g3_2 = 1.10 * A^(2/7)
+g3_3 = 0.61 * A^(4/7)
+%
+%
+%% 4 Stages
+disp('4 Stages:');
+% g3=sqrt(2*g4) , g2=sqrt(2*sqrt(2*g4)) , g1=sqrt(2*sqrt(2*sqrt(2*g4))) , g1*g2*g3*g4=A
+g4_1 = 1.66 * A^(1/15)
+g4_2 = 1.38 * A^(2/15)
+g4_3 = 0.95 * A^(4/15)
+g4_4 = 0.46 * A^(8/15)
+%
+%

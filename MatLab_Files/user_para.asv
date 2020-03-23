@@ -1,0 +1,40 @@
+function [N0, V, roh_in, g, Q, k]=user_para;
+
+%% Parameter Abfrage
+%
+clear;
+clc;
+%
+prompt = {'Rauschspannungsdichte N0 [nV/sqrt(HZ)]' ,...
+          'Spitze-Spitze-Spannung des Eingangssignals [V]:',...
+          'Slew Rate des Eingagnssignals [V/us]: ',...
+          'Slope gain [ ]',...
+          'Design Parameter k [ ]: '};
+dlg_title = 'Parametereingabe';
+defAns = {'' , '' , '' , '' , ''};
+options.Interpreter = 'tex';
+answer = inputdlg(prompt, dlg_title, 1, defAns, options );
+
+%
+user_N0 = str2num(answer{1});
+user_V = str2num(answer{2});
+user_roh_in = str2num(answer{3});
+user_g = str2num(answer{4});
+k = str2num(answer{5});
+%
+%
+test = @(y) 1-exp(-((k/(k-(1/2))))*y)-y;
+y0=1;
+y = fsolve(test,y0); %y=g/G
+clc;
+Q = (2*(1/y)-1)*(1/(k-(1/2)));
+%
+%% Parameteraufbereitung/Einheitennormierung
+%
+%
+g = user_g;
+V = user_V;
+roh_in = 1e6*user_roh_in;
+N0 = user_N0 * 1e-9;
+%Tr = user_Tr * 1e-6;
+%
